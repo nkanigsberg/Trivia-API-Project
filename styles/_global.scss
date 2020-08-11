@@ -72,7 +72,7 @@ body {
 
 button {
 	background: $button;
-	color: white;
+	color: $contentBackground;
 	padding: 1rem 3rem;
 	border-radius: 1rem;
 
@@ -84,4 +84,5 @@ button {
 
 h1 {
 	text-align: center;
+	color: $contentBackground;
 }

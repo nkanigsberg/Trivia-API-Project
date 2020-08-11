@@ -287,7 +287,7 @@ body {
 }
 
 body {
-  background: #cbdee6;
+  background: #282621;
   font-family: "Barlow", sans-serif;
 }
 
@@ -301,7 +301,7 @@ body {
 
 button {
   background: #466fd1;
-  color: white;
+  color: #fafdff;
   padding: 1rem 3rem;
   border-radius: 1rem;
 }
@@ -312,6 +312,7 @@ button:hover, button:focus {
 
 h1 {
   text-align: center;
+  color: #fafdff;
 }
 
 .loading-bar,
@@ -564,9 +565,14 @@ div.answer input[type="radio"] {
 
 footer {
   padding: 10rem 0 1rem;
+  color: #fafdff;
+}
+
+footer a {
+  text-decoration: underline;
 }
 
 footer a:hover, footer a:focus {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(250, 253, 255, 0.6);
 }
 /*# sourceMappingURL=styles.css.map */

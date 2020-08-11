@@ -157,10 +157,12 @@ div.answer {
 
 footer {
 	padding: 10rem 0 1rem;
+	color: $contentBackground;
 	a {
+		text-decoration: underline;
 		&:hover,
 		&:focus {
-			color: rgba(black, 0.5);
+			color: rgba($contentBackground, 0.6);
 		}
 	}
 }
