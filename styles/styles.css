@@ -287,13 +287,13 @@ body {
 }
 
 body {
-  background: #282621;
+  background: #353939;
   font-family: "Barlow", sans-serif;
 }
 
 .content-box {
   background: #fafdff;
-  border: 2px solid grey;
+  border: 8px solid #65b5ce;
   border-radius: 2rem;
   margin: 2rem;
   padding: 2rem;
@@ -311,6 +311,7 @@ button:hover, button:focus {
 }
 
 h1 {
+  padding: 2rem 0 0;
   text-align: center;
   color: #fafdff;
 }
