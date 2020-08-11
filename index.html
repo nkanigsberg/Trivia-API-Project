@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Project 2 - Trivia</title>
+	<!-- google fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&display=swap" rel="stylesheet"> 
 	<!-- stylesheet -->
 	<link rel="stylesheet" href="./styles/styles.css">
 </head>
@@ -11,6 +13,8 @@
 <!-- todo -->
 	<!-- error check response code and display message -->
 	<!-- session tokens so no duplicate questions -->
+	<!-- warnings about empty field - or set default/radio -->
+	<!-- don't allow submit if nothing checked -->
 
 
 <body>
@@ -27,52 +31,85 @@
 		<div class="wrapper">
 			<div class="trivia">
 
-				<!-- setup questions -->
-				<div class="setup">
-					<form action="javascript:void(0);">
-						<fieldset>
-							<legend>Setup Trivia</legend>
+				<div class="top-row">
+					<!-- setup questions -->
+					<div class="setup content-box">
+						<h3>Setup Trivia</h3>
+						<form action="javascript:void(0);">
 
 							<!-- number of questions -->
-							<label for='numQuestions'>How many questions?</label>
-							<input type='number' id='numQuestions' name='numQuestions' placeholder='1 - 20' min="1" max="20">
+							<div class="setup-option">
+								<label for='numQuestions'>Number of Questions:</label>
+								<input type="range" min="1" max="30" value="1" id="numQuestions">
+								<span class="range-value"></span>
+							</div>
 							
 							<!-- categories -->
-							<label for='category'>Category: </label>
-							<select name="category" id="category">
-								<option value="0">Any</option>
-
-								<!-- categories generated here -->
-
-							</select>
-
+							<div class="setup-option">
+								<label for='category'>Category:</label>
+								<select name="category" id="category">
+									<option value="0">Any</option>
+	
+									<!-- categories generated here -->
+	
+								</select>
+							</div>
+	
 							<!-- difficulty -->
-							<label for='difficulty'>Difficulty: </label>
-							<select name="difficulty" id="difficulty">
-								<option value="0">Any</option>
-								<option value="easy">Easy</option>
-								<option value="medium">Medium</option>
-								<option value="hard">Hard</option>
-
-								<!-- categories generated here -->
-
-							</select>
-
+							<div class="setup-option">
+								<label for='difficulty'>Difficulty:</label>
+								<select name="difficulty" id="difficulty">
+									<option value="0">Any</option>
+									<option value="easy">Easy</option>
+									<option value="medium">Medium</option>
+									<option value="hard">Hard</option>
+	
+									<!-- categories generated here -->
+	
+								</select>
+							</div>
+	
 							<!-- multiple choice or true/false -->
-							<label for='type'>Question type: </label>
-							<select name="type" id="type">
-								<option value="0">Any</option>
-								<option value="multiple">Multiple Choice</option>
-								<option value="boolean">True / False</option>
-							</select>
-
+							<div class="setup-option">
+								<label for='type'>Question type:</label>
+								<select name="type" id="type">
+									<option value="0">Any</option>
+									<option value="multiple">Multiple Choice</option>
+									<option value="boolean">True / False</option>
+								</select>
+							</div>
+	
 							<button type="submit">Start Trivia</button>
-						</fieldset>
-					</form>
+						</form>
+					</div>
+
+					<!-- score and timer -->
+					<div class="score-timer content-box">
+						<div class="score">
+							<div class="score-item">
+								<h3>Correct:</h3>
+								<span class="score-correct">--</span>
+							</div>
+							<div class="score-item">
+								<h3>Incorrect:</h3>
+								<span class="score-incorrect">--</span>
+							</div>
+							<div class="score-item">
+								<h3>Questions Left:</h3>
+								<span class="score-remaining">--</span>
+							</div>
+						</div>
+						<div class="timer">
+							<h3>Timer:</h3>
+							<span class="timer-value">--</span>
+						</div>
+					</div>
+
+
 				</div>
 	
 				<!-- Trivia question -->
-				<div class="question-container">
+				<div class="question-container content-box">
 					<h3>Question:</h3>
 					<div class="question">
 					
@@ -82,15 +119,17 @@
 				</div>
 	
 				<!-- The answer user input -->
-				<div class="answer-container">
+				<div class="answer content-box">
+					<h3>Answer:</h3>
 					<form action="javascript:void(0);">
-						<fieldset class="answer">
-							<legend>Answer:</legend>
+						
+						<div class="answer-options">
 							<!-- answer generated here -->
-
-
-						</fieldset>
-						<button type="submit">Submit</button>
+						</div>
+						
+						<div class="answer-button">
+							
+						</div>
 					</form>
 				</div>
 			</div>

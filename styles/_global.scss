@@ -3,11 +3,7 @@ h1,
 h2,
 h3,
 h4,
-h5,
-h6,
 p,
-ul,
-li,
 button {
 	margin: 0;
 	padding: 0;
@@ -22,6 +18,10 @@ ul {
 a {
 	text-decoration: none;
 	color: inherit;
+}
+
+select {
+	font-family: inherit;
 }
 
 // Strip button default styling (and add pointer cursor)
@@ -50,13 +50,38 @@ body {
 
 // wrapper styles
 .wrapper {
-	max-width: 1600px;
+	max-width: 1000px;
 	width: 85%;
 	margin: 0 auto;
 }
 
 
-
 body {
 	background: $backgroundColor;
+	font-family: $defaultFont;
+}
+
+.content-box {
+	background: $contentBackground;
+	border: 2px solid grey;
+	border-radius: 2rem;
+	margin: 2rem;
+	padding: 2rem;
+}
+
+
+button {
+	background: $button;
+	color: white;
+	padding: 1rem 3rem;
+	border-radius: 1rem;
+
+	&:hover,
+	&:focus {
+		background: $buttonHover;
+	}
+}
+
+h1 {
+	text-align: center;
 }

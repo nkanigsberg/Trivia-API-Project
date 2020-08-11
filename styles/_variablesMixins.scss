@@ -1,4 +1,13 @@
 
 // colors
 $backgroundColor: #cbdee6;
-// Strip default margin/padding
+$contentBackground: #fafdff;
+
+$correct: rgb(69, 194, 69);
+$incorrect: #f44;
+
+$button: rgb(70, 111, 209);
+$buttonHover: lighten(rgb(70, 111, 209), 5);
+
+// font stack
+$defaultFont: 'Barlow', sans-serif;
