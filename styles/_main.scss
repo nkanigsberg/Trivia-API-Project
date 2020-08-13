@@ -1,6 +1,7 @@
-div.top-row {
+div.trivia {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 label {
@@ -11,7 +12,7 @@ label {
 div.setup {
 	display: flex;
 	flex-direction: column;
-	min-width: 48rem;
+	// min-width: 48rem;
 	width: calc(70% - 4rem);
 
 	&-option {
@@ -27,11 +28,13 @@ div.setup {
 			border: 1px solid grey;
 		}
 	}
+	select {
+		width: 25rem;
+	}
 }
 
 div.score-timer {
 	text-align: center;
-	min-width: 20rem;
 	width: calc(30% - 4rem);
 
 	.score {
@@ -51,22 +54,40 @@ div.score-timer {
 
 		span {
 			font-size: 2rem;
+			font-weight: bold;
 		}
 	}
 
 	.timer {
+		display: flex;
+		flex-direction: column;
 		border-top: 1px solid grey;
-		padding-top: 1rem;
+		padding-top: 2rem;
 		margin-top: 2rem;
 
 		&-value {
-			color: green;
-			font-size: 2.5rem;
+			font-size: 3rem;
 			font-weight: bold;
+			padding: 1rem;
+
+			&.green {
+				color: $correct;
+			}
+			&.yellow {
+				color: $yellow;
+			}
+			&.red {
+				color: $incorrect;
+			}
 		}
 	}
 }
 
+div.question-answer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
 
 div.question-container {
 	display: flex;
@@ -82,24 +103,22 @@ div.question-container {
 	}
 }
 
-// h3 {
-// 	padding-right: 2rem;
-// }
-
 .message {
 padding: 1rem;
 border-radius: 1rem;
+
+	&.correct {
+		background: $correct;
+	}
+
+	&.incorrect {
+		background: $incorrect;
+	}
 }
 
-.correct {
-	background: $correct;
-}
-
-.incorrect {
-	background: $incorrect;
-}
 
 div.answer {
+
 	&-options {
 		display: flex;
 		flex-direction: row;
@@ -109,10 +128,11 @@ div.answer {
 	&-button {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 	}
 
 	button {
-		margin-right: 1rem;
+		margin: 1rem 1rem 0 0;
 	}
 
 	form{
@@ -120,12 +140,12 @@ div.answer {
 		flex-direction: column;
 	}
 
-	span {
+	span.answer-option {
 		border: 1px solid grey;
 		border-radius: 1rem;
 		width: calc(50% - 0.4rem);
 		display: flex;
-		padding: 0.8rem;
+		flex-direction: row;
 		margin: 0.2rem;
 		background: #f2f8fb;
 
@@ -147,10 +167,32 @@ div.answer {
 		width: 100%;
 		height: 100%;
 		cursor: pointer;
+		padding: 1.5rem;
 	}
 
 	input[type="radio"] {
 		cursor: pointer;
+		margin-left: 1rem;
+	}
+
+	h4 {
+		font-size: 2rem;
+	}
+
+	p {
+		font-size: 1.8rem;
+	}
+}
+
+.game-over {
+	.correct {
+		font-size: 2rem;
+		color: $correct;
+	}
+
+	.incorrect {
+		font-size: 2rem;
+		color: $incorrect;
 	}
 }
 
@@ -165,4 +207,9 @@ footer {
 			color: rgba($contentBackground, 0.6);
 		}
 	}
+}
+
+.by {
+	font-size: 2rem;
+	margin-bottom: 0.4rem;
 }

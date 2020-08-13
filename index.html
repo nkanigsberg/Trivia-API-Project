@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+<!-- Nathan Kanigsberg
+Project 2 - Juno College JavaScript Course
+August 12, 2020 -->
+
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -9,13 +14,6 @@
 	<!-- stylesheet -->
 	<link rel="stylesheet" href="./styles/styles.css">
 </head>
-
-<!-- todo -->
-	<!-- error check response code and display message -->
-	<!-- session tokens so no duplicate questions -->
-	<!-- warnings about empty field - or set default/radio -->
-	<!-- don't allow submit if nothing checked -->
-
 
 <body>
 	
@@ -31,115 +29,118 @@
 		<div class="wrapper">
 			<div class="trivia">
 
-				<div class="top-row">
-					<!-- setup questions -->
-					<div class="setup content-box">
-						<h3>Setup Trivia</h3>
-						<form action="javascript:void(0);">
-
-							<!-- number of questions -->
-							<div class="setup-option">
-								<label for='numQuestions'>Number of Questions:</label>
-								<input type="range" min="1" max="30" value="1" id="numQuestions">
-								<span class="range-value"></span>
-							</div>
-							
-							<!-- categories -->
-							<div class="setup-option">
-								<label for='category'>Category:</label>
-								<select name="category" id="category">
-									<option value="0">Any</option>
-	
-									<!-- categories generated here -->
-	
-								</select>
-							</div>
-	
-							<!-- difficulty -->
-							<div class="setup-option">
-								<label for='difficulty'>Difficulty:</label>
-								<select name="difficulty" id="difficulty">
-									<option value="0">Any</option>
-									<option value="easy">Easy</option>
-									<option value="medium">Medium</option>
-									<option value="hard">Hard</option>
-	
-									<!-- categories generated here -->
-	
-								</select>
-							</div>
-	
-							<!-- multiple choice or true/false -->
-							<div class="setup-option">
-								<label for='type'>Question type:</label>
-								<select name="type" id="type">
-									<option value="0">Any</option>
-									<option value="multiple">Multiple Choice</option>
-									<option value="boolean">True / False</option>
-								</select>
-							</div>
-	
-							<button type="submit">Start Trivia</button>
-						</form>
-					</div>
-
-					<!-- score and timer -->
-					<div class="score-timer content-box">
-						<div class="score">
-							<div class="score-item">
-								<h3>Correct:</h3>
-								<span class="score-correct">--</span>
-							</div>
-							<div class="score-item">
-								<h3>Incorrect:</h3>
-								<span class="score-incorrect">--</span>
-							</div>
-							<div class="score-item">
-								<h3>Questions Left:</h3>
-								<span class="score-remaining">--</span>
-							</div>
-						</div>
-						<div class="timer">
-							<h3>Timer:</h3>
-							<span class="timer-value">--</span>
-						</div>
-					</div>
-
-
-				</div>
-	
-				<!-- Trivia question -->
-				<div class="question-container content-box">
-					<h3>Question:</h3>
-					<div class="question">
-					
-						<!-- Question generated here -->
-
-					</div>
-				</div>
-	
-				<!-- The answer user input -->
-				<div class="answer content-box">
-					<h3>Answer:</h3>
+				<!-- setup questions -->
+				<div class="setup content-box">
+					<h3>Setup Trivia</h3>
 					<form action="javascript:void(0);">
-						
-						<div class="answer-options">
-							<!-- answer generated here -->
+
+						<!-- number of questions -->
+						<div class="setup-option">
+							<label for='numQuestions'>Number of Questions:</label>
+							<input type="range" min="1" max="30" value="1" id="numQuestions">
+							<span class="range-value"></span>
 						</div>
 						
-						<div class="answer-button">
-							
+						<!-- categories -->
+						<div class="setup-option">
+							<label for='category'>Category:</label>
+							<select name="category" id="category">
+								<option value="0">Any</option>
+
+								<!-- categories generated here -->
+
+							</select>
 						</div>
+
+						<!-- difficulty -->
+						<div class="setup-option">
+							<label for='difficulty'>Difficulty:</label>
+							<select name="difficulty" id="difficulty">
+								<option value="0">Any</option>
+								<option value="easy">Easy</option>
+								<option value="medium">Medium</option>
+								<option value="hard">Hard</option>
+
+								<!-- categories generated here -->
+
+							</select>
+						</div>
+
+						<!-- multiple choice or true/false -->
+						<div class="setup-option">
+							<label for='type'>Question type:</label>
+							<select name="type" id="type">
+								<option value="0">Any</option>
+								<option value="multiple">Multiple Choice</option>
+								<option value="boolean">True / False</option>
+							</select>
+						</div>
+
+						<button type="submit">Start Trivia</button>
 					</form>
 				</div>
-			</div>
 
+				<!-- score and timer -->
+				<div class="score-timer content-box">
+					<div class="score">
+						<div class="score-item">
+							<h3>Correct:</h3>
+							<span class="score-correct">--</span>
+						</div>
+						<div class="score-item">
+							<h3>Incorrect:</h3>
+							<span class="score-incorrect">--</span>
+						</div>
+						<div class="score-item">
+							<h3>Questions Left:</h3>
+							<span class="score-remaining">--</span>
+						</div>
+					</div>
+					<div class="timer">
+						<h3>Timer:</h3>
+						<span class="timer-value green">--</span>
+					</div>
+				</div>
+
+	
+				<div class="question-answer">
+					<!-- Trivia question -->
+					<div class="question-container content-box">
+						<h3>Question:</h3>
+						<div class="question">
+
+							<!-- Question generated here -->
+
+						</div>
+					</div>
+		
+					<!-- The answer user input -->
+					<div class="answer content-box">
+						<h3>Answer:</h3>
+						<form action="javascript:void(0);">
+							
+							<div class="answer-options">
+
+								<!-- answers generated here -->
+
+							</div>
+							
+							<div class="answer-button">
+
+								<!-- buttons and warnings generated here -->
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</main>
 
 	<!-- footer -->
 	<footer>
 		<div class="wrapper">
+			<p class="by">By Nathan Kanigsberg</p>
 			<p>Made with <a href="https://opentdb.com">Open Trivia Database</a></p>
 			<p>Created at <a href="https://junocollege.com/">Juno College</a></p>
 		</div>

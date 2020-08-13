@@ -9,11 +9,6 @@ button {
 	padding: 0;
 }
 
-// Strip ul default styling
-ul {
-	list-style: none;
-}
-
 // Strip anchor tag default styling
 a {
 	text-decoration: none;
@@ -73,8 +68,9 @@ body {
 button {
 	background: $button;
 	color: $contentBackground;
-	padding: 1rem 3rem;
+	padding: 1.2rem 3rem;
 	border-radius: 1rem;
+	font-size: 1.6rem;
 
 	&:hover,
 	&:focus {
@@ -83,7 +79,8 @@ button {
 }
 
 h1 {
-	padding: 2rem 0 0;
+	font-size: 3.8rem;
+	padding: 3rem 0 1.4rem;
 	text-align: center;
 	color: $contentBackground;
 }

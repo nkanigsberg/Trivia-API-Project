@@ -1,3 +1,7 @@
+/* Nathan Kanigsberg
+Project 2 - Juno College JavaScript Course
+August 12, 2020 */
+
 /** @namespace trivia */
 const trivia = {};
 
@@ -6,9 +10,6 @@ trivia.openTriviaBaseUrl = `https://opentdb.com/api.php?`;
 
 /** @type {string} trivia categories url */
 trivia.categoriesUrl = `https://opentdb.com/api_category.php`;
-
-/** @type {string} session token to send with requests */
-trivia.sessionToken = `&token=YOURTOKENHERE`;
 
 /** @type {array} array of question objects pulled from API */
 trivia.questions = [];
@@ -31,29 +32,53 @@ trivia.incorrect = 0;
 /** @type {number} number of remaining questions */
 trivia.remaining = 0;
 
+/** @type {number} the timer */
+trivia.timer;
 
-/** Setup trivia game based on user input */
+
+/**
+ * Update score display
+ */
+trivia.updateScore = function() {
+	$('div.score-timer span.score-correct').text(trivia.correct);
+	$('div.score-timer span.score-incorrect').text(trivia.incorrect);
+	$('div.score-timer span.score-remaining').text(trivia.remaining);
+};
+
+
+/**
+ * Display loading symbol to user while waiting for API
+ * @param {boolean} isLoading - true if API data still loading, false otherwise
+ */
+trivia.loading = function(isLoading) {
+	if (isLoading) {
+		$('div.setup').append('<div class="loading-bar"></div>');
+	} else {
+		$('div.setup').find('div.loading-bar').remove();
+	}
+};
+
+
+/** 
+ * Setup trivia game based on user input 
+ */
 trivia.setup = async function() {
 	// add number next to slider
 	$('div.setup span.range-value').text(`${$('div.setup input[type="range"]').val()}`);
-	
 	
 	/** @type {JQuery} category select element */
 	const $categoriesSelect = $('div.setup select#category');
 
 	/** @type {object} category data from API */
 	const categories = await $.ajax(trivia.categoriesUrl);
-	// console.log(categories);
 
 	// set global variable with all potential categories
 	trivia.categories = categories.trivia_categories.slice();
-	// console.log('trivia.categories: ', trivia.categories);
 
 	// append category options to html
 	trivia.categories.forEach(element => {
 		$categoriesSelect.append(`<option value="${element.id}">${element.name}</option>`);
 	});
-
 
 	// update number next to slider
 	$('div.setup input[type="range"]').on('input', function() {
@@ -66,59 +91,31 @@ trivia.setup = async function() {
 
 
 /**
- * Update score display
- */
-trivia.updateScore = function() {
-	const $scoreCorrect = $('div.score-timer span.score-correct');
-	const $scoreIncorrect = $('div.score-timer span.score-incorrect');
-	const $scoreRemaining = $('div.score-timer span.score-remaining');
-
-	$scoreCorrect.text(trivia.correct);
-	$scoreIncorrect.text(trivia.incorrect);
-	$scoreRemaining.text(trivia.remaining)
-};
-
-
-/**
- * Display loading symbol to user while waiting for API
- * @param {boolean} isLoading - true if API data still loading, false otherwise
- */
-trivia.loading = function(isLoading) {
-	if (isLoading) {
-		$('div.setup fieldset').append('<div class="loading-bar"></div>');
-	} else {
-		$('div.setup fieldset').find('div.loading-bar').remove();
-	}
-};
-
-
-/**
  * Get input from user and send request for trivia data on form submit
  * @param {JQuery} $button - the button to listen to
  */
 trivia.getInput = function($button = $('div.setup button')) {
 	$button.on('click', function() {
-
 		// reset previous game
 		trivia.reset();
 
 		// indicate loading to user
 		trivia.loading(true);
-		
-
-		const numQuestions = ($('input#numQuestions').val());
-		const category = $('select#category option:selected').val();
-		const difficulty = $('select#difficulty option:selected').val();
-		const type = $('select#type option:selected').val();
-		// @ts-ignore
-		trivia.getTrivia(numQuestions, category, difficulty, type);
 
 		// change button text
 		$('div.setup button').text('Start Again');
+		
+		/** @type {number} */
+		const numQuestions = ($('input#numQuestions').val());
+		/** @type {number} */
+		const category = ($('select#category option:selected').val());
+		/** @type {string} */
+		const difficulty = ($('select#difficulty option:selected').val());
+		/** @type {string} */
+		const type = ($('select#type option:selected').val());
 
-		// set the timer
-		// trivia.setTimer(15);
-
+		// send API request
+		trivia.getTrivia(numQuestions, category, difficulty, type);
 	});
 };
 
@@ -135,14 +132,15 @@ trivia.getTrivia = async function(amount, category, difficulty, type) {
 	try {
 		/** @type {object} the API response object */
 		const response = await $.ajax(`${trivia.openTriviaBaseUrl}amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
+
+		// check for errors
+		trivia.responseError(response.response_code);
 		
 		// set questions array to results
 		trivia.questions = response.results;
-		// console.log(trivia.questions);
 
 		// update remaining questions
 		trivia.remaining = trivia.questions.length;
-		// console.log(trivia.remaining);
 
 		// update score
 		trivia.updateScore();
@@ -150,6 +148,8 @@ trivia.getTrivia = async function(amount, category, difficulty, type) {
 		// remove loading bar
 		trivia.loading(false);
 
+		// set the timer
+		trivia.setTimer(15);
 
 		// Display question to user
 		trivia.displayQuestion();
@@ -162,6 +162,18 @@ trivia.getTrivia = async function(amount, category, difficulty, type) {
 	};
 };
 
+
+/** 
+ * Display warning to user if an error code recieved from API 
+ * @param {number} code
+ */
+trivia.responseError = function(code) {
+	if (code === 1) {
+		$('div.setup').append('<p class="message incorrect">Not enough matching questions in database</p>');
+	} else if (code === 2) {
+		$('div.setup').append('<p class="message incorrect">Error - try again</p>');
+	}
+}
 
 
 /** 
@@ -178,7 +190,6 @@ trivia.displayQuestion = function() {
 };
 
 
-
 /**
  * Randomize the array of answers passed as argument
  * @param {array} answers 
@@ -188,7 +199,6 @@ trivia.randomizeAnswers = function(answers) {
 	let randomizedAnswers = [];
 
 	// loop through answers and append random answer to new array
-	// @ts-ignore
 	for (let i in answers) {
 		const rand = Math.floor(Math.random() * answersClone.length);
 		randomizedAnswers.push(answersClone[rand]);
@@ -200,12 +210,10 @@ trivia.randomizeAnswers = function(answers) {
 };
 
 
-
 /** 
  * Display answer to user and listen for submit
  */
 trivia.displayAnswers = function() {
-	
 	/** @type {JQuery} the div to generate answers within */
 	const $answerOptions = $('div.answer div.answer-options');
 		/** @type {JQuery} the div to generate buttons (& warnings) within */
@@ -220,14 +228,14 @@ trivia.displayAnswers = function() {
 	/** @type {array} array of randomized answers */
 	const randomizedAnswers = trivia.randomizeAnswers(answers);
 
-	/** @type {number} index of the correct answer in the randomized array*/
-	const correctIndex = randomizedAnswers.indexOf(trivia.currentQuestion.correct_answer);
+	// set correct index
+	trivia.correctIndex = randomizedAnswers.indexOf(trivia.currentQuestion.correct_answer);
 
 	// append each answer to html
 	for (let i in randomizedAnswers) {
 		let questionHTML = ``;
 		questionHTML += `
-			<span>
+			<span class="answer-option">
 				<input type="radio" name="answer" id="answer-${i}" value="${i}">
 				<label for="answer-${i}">${randomizedAnswers[i]}</label>
 			</span>`;
@@ -240,7 +248,7 @@ trivia.displayAnswers = function() {
 	$answerButton.append(`<button type="submit" class="submit">Submit</button>`);
 
 	// listen for input and check answers
-	trivia.checkAnswers($answerOptions, $answerButton, correctIndex);
+	trivia.checkAnswers($answerOptions, $answerButton);
 };
 
 
@@ -248,88 +256,106 @@ trivia.displayAnswers = function() {
  * Listen for input, check answers, and display result
  * @param {JQuery} $answerOptions - the answers
  * @param {JQuery} $answerButton - button & warnings
- * @param {number} correctIndex - the index of correct answer
  */
-trivia.checkAnswers = function($answerOptions, $answerButton, correctIndex) {
+trivia.checkAnswers = function($answerOptions, $answerButton) {
+	/** @type {boolean} true if an answer is checked, false otherwise */
+	let buttonChecked = false;
+	
+	// set buttonChecked to true on click of an answer
+	$('div.answer-options').on('click', 'input', function() {
+		buttonChecked = true;
+	});
+
 	// listen for answer submit
 	$('div.answer button.submit').on('click', function() {
-		// reset timer
-		// trivia.setTimer(0);
+		
+		// remove warnings
+		$('div.answer-button').find('p').remove();
+		
+		if (buttonChecked) {
+			// reset timer
+			clearInterval(trivia.timer);
+			trivia.setTimer(0);
 
-		/** @type {JQuery} the checked answer input element */
-		const $answer = $answerOptions.find('input:checked');
-	
-		// if answer is correct
-		// @ts-ignore
-		if (parseInt($answer.val()) === correctIndex) {
-			// increment correct answers
-			trivia.correct++;
+			/** @type {JQuery} the checked answer input element */
+			const $answer = $answerOptions.find('input:checked');
+		
+			// if answer is correct
+			// @ts-ignore
+			if (parseInt($answer.val()) === trivia.correctIndex) {
+				// increment correct answers
+				trivia.correct++;
 
-			// append 'correct' message to html
-			$answerButton.append('<p class="message correct">Correct!</p>')
+				// append 'correct' message to html
+				$answerButton.append('<p class="message correct">Correct!</p>')
 
-		} else { //if answer is incorrect
-			// increment incorrect answers
-			trivia.incorrect++;
+			} else { //if answer is incorrect
+				// increment incorrect answers
+				trivia.incorrect++;
 
-			// colour incorrect guess
-			$answer.parent('span').addClass('incorrect');
+				// colour incorrect guess
+				$answer.parent('span').addClass('incorrect');
 
-			// append 'incorrect' message to html
-			$answerButton.append('<p class="message incorrect">Sorry, wrong answer</p>')
-		}
+				// append 'incorrect' message to html
+				$answerButton.append('<p class="message incorrect">Sorry, wrong answer</p>')
+			}
 
-		// colour correct answer
-		$(`div.answer input[value="${correctIndex}"]`).parent('span').addClass('correct');
+			// colour correct answer
+			$(`div.answer input[value="${trivia.correctIndex}"]`).parent('span').addClass('correct');
 
+			// decrement remaining questions
+			trivia.remaining--;
 
-		// decrement remaining questions
-		trivia.remaining--;
+			// update score
+			trivia.updateScore();
 
-		// update score
-		trivia.updateScore();
+			// remove button 
+			$('div.answer button').remove();
 
-		// remove button 
-		$('div.answer button').remove();
+			// if no more questions
+			if (trivia.remaining === 0) {
+				
+				// empty any messages
+				$answerButton.empty();
 
-		// if no more questions
-		if (trivia.remaining === 0) {
-			
-			// empty any messages
-			$answerButton.empty();
+				// append 'play again' button and message to html
+				$answerButton.append(`
+					<button type="submit" class="play-again">Play Again</button>
+					<div class="game-over">
+						<h4>Game Over!</h4>
+						<p>You got <span class="correct">${trivia.correct}</span> correct and <span class="incorrect">${trivia.incorrect}</span> incorrect. Play Again?
+					</div>
+					`);
+		
+				// allow play again button to trigger new game
+				trivia.getInput($('div.answer-button').find('button'));
 
-			// append 'play again' button and message to html
-			$answerButton.append(`
-				<button type="submit" class="play-again">Play Again</button>
-				<div class="game-over">
-					<h4>Game Over!</h4>
-					<p>You got ${trivia.correct} correct and ${trivia.incorrect} incorrect. Play Again?
-				</div>
-				 `);
-	
-			// allow play again button to trigger new game
-			trivia.getInput($('div.answer-button').find('button'));
+			} else { //if there are still more questions
+				trivia.nextQuestion();
+			};
 
-		} else { //if there are still more questions
-			trivia.nextQuestion();
-		}
+		} else { //if a button is not checked
+			// append 'pick answer' message to html
+			$answerButton.append('<p class="message incorrect">Pick an answer!</p>')
+		};
 	});
 };
 
 
-
-
-/** move to next question */
+/** 
+ * Move to next question 
+ */
 trivia.nextQuestion = function() {
+	/** @type {JQuery} the answer form */
 	const $answer = $('div.answer form');
+	/** @type {JQuery} the answer button & warning div*/
 	const $answerButton = $('div.answer-button');
 
 	// add 'next question' button to html
 	$answerButton.prepend(`<button type="submit">Next Question</button>`);
 
-
+	// on click of 'next question' button
 	$answer.on('click', 'button', function() {
-		
 		// clean up existing html
 		trivia.cleanUp();
 
@@ -342,34 +368,76 @@ trivia.nextQuestion = function() {
 		// display answers
 		trivia.displayAnswers();
 
+		// start timer
+		trivia.setTimer(15);
+
 		// remove listener
 		$answer.off();
 	});
 };
 
 
-// /**
-//  * Sets the timer
-//  * @param {number} time - how long to set the timer in seconds
-//  */
-// trivia.setTimer = function(time) {
-// 	const $timer = $('div.score-timer span.timer-value');
-// 	let seconds = time;
+/**
+ * Sets the timer
+ * @param {number} time - how long to set the timer in seconds
+ */
+trivia.setTimer = function(time) {
+	/** @type {JQuery} the timer */
+	const $timer = $('div.score-timer span.timer-value');
 
-// 	// if there is still time left
-// 	if (seconds > 0) {
-// 		$timer.text(seconds);
-// 		const interval = setInterval(function() {
-// 			seconds--;
-// 			$timer.text(seconds);
-// 			if (seconds === 0) {
-// 				clearInterval(interval);
-// 			};
-// 		}, 1000);
-// 	 } else { // if there is no time left
-// 		$timer.text('--');
-// 	};
-// };
+	/** @type {number} the time remaining */
+	let seconds = time;
+
+	// set colour to green
+	$timer.removeClass('red yellow').addClass('green');
+
+	// if there is still time left
+	if (time > 0) {
+		$timer.text(seconds);
+		trivia.timer = setInterval(function() {
+			seconds--;
+			$timer.text(seconds);
+
+			// colour timer based on time left
+			if ( ( seconds / time ) < 0.33 ) {
+				$timer.removeClass('green yellow').addClass('red');
+			} else if ( ( seconds / time ) < 0.67 ) {
+				$timer.removeClass('green red').addClass('yellow');
+			} else {
+				$timer.removeClass('yellow red').addClass('green');
+			};
+
+			// if time is up
+			if (seconds === 0) {
+				clearInterval(trivia.timer);
+				$timer.text('Time\'s up!');
+
+				// lose round
+				trivia.incorrect++;
+				trivia.remaining--;
+
+				// update score
+				trivia.updateScore();
+
+				// colour correct answer
+				$(`div.answer input[value="${trivia.correctIndex}"]`).parent('span').addClass('incorrect');
+
+				// append 'out of time' message to html
+				$('.answer-button').append('<p class="message incorrect">Out of time!</p>')
+
+				// remove button 
+				$('div.answer button').remove();
+
+				// prepare next question
+				trivia.nextQuestion();
+			};
+		}, 1000);
+
+	 } else { // if there is no time left
+		$timer.text('--');
+		clearInterval(trivia.timer);
+	};
+};
 
 
 /** Remove warnings, question and answers */
@@ -377,12 +445,15 @@ trivia.cleanUp = function() {
 	$('div.question').empty();
 	$('div.answer-options').empty();
 	$('div.answer-button').empty()
+	$('div.setup').find('p.message').remove();
 };
 
 
 /** Reset game */
 trivia.reset = function() {
 	trivia.cleanUp();
+
+	clearInterval(trivia.timer);
 
 	trivia.currentIndex = 0;
 	trivia.correct = 0;

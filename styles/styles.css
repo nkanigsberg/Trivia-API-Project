@@ -1,3 +1,6 @@
+/* Nathan Kanigsberg
+Project 2 - Juno College JavaScript Course
+August 12, 2020 */
 html {
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
@@ -245,10 +248,6 @@ button {
   padding: 0;
 }
 
-ul {
-  list-style: none;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -302,8 +301,9 @@ body {
 button {
   background: #466fd1;
   color: #fafdff;
-  padding: 1rem 3rem;
+  padding: 1.2rem 3rem;
   border-radius: 1rem;
+  font-size: 1.6rem;
 }
 
 button:hover, button:focus {
@@ -311,7 +311,8 @@ button:hover, button:focus {
 }
 
 h1 {
-  padding: 2rem 0 0;
+  font-size: 3.8rem;
+  padding: 3rem 0 1.4rem;
   text-align: center;
   color: #fafdff;
 }
@@ -368,7 +369,7 @@ h1 {
   }
 }
 
-div.top-row {
+div.trivia {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -376,6 +377,8 @@ div.top-row {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 label {
@@ -391,7 +394,6 @@ div.setup {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  min-width: 48rem;
   width: calc(70% - 4rem);
 }
 
@@ -416,9 +418,12 @@ div.setup-option span {
   border: 1px solid grey;
 }
 
+div.setup select {
+  width: 25rem;
+}
+
 div.score-timer {
   text-align: center;
-  min-width: 20rem;
   width: calc(30% - 4rem);
 }
 
@@ -446,18 +451,49 @@ div.score-timer .score-item {
 
 div.score-timer .score span {
   font-size: 2rem;
+  font-weight: bold;
 }
 
 div.score-timer .timer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   border-top: 1px solid grey;
-  padding-top: 1rem;
+  padding-top: 2rem;
   margin-top: 2rem;
 }
 
 div.score-timer .timer-value {
-  color: green;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
+  padding: 1rem;
+}
+
+div.score-timer .timer-value.green {
+  color: #45c245;
+}
+
+div.score-timer .timer-value.yellow {
+  color: #f1cd2a;
+}
+
+div.score-timer .timer-value.red {
+  color: #f44;
+}
+
+div.question-answer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
 }
 
 div.question-container {
@@ -486,11 +522,11 @@ div.question-container p {
   border-radius: 1rem;
 }
 
-.correct {
+.message.correct {
   background: #45c245;
 }
 
-.incorrect {
+.message.incorrect {
   background: #f44;
 }
 
@@ -514,10 +550,13 @@ div.answer-button {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 div.answer button {
-  margin-right: 1rem;
+  margin: 1rem 1rem 0 0;
 }
 
 div.answer form {
@@ -530,27 +569,30 @@ div.answer form {
           flex-direction: column;
 }
 
-div.answer span {
+div.answer span.answer-option {
   border: 1px solid grey;
   border-radius: 1rem;
   width: calc(50% - 0.4rem);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 0.8rem;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
   margin: 0.2rem;
   background: #f2f8fb;
 }
 
-div.answer span:hover, div.answer span:focus {
+div.answer span.answer-option:hover, div.answer span.answer-option:focus {
   background: #d4f1ff;
 }
 
-div.answer span.correct {
+div.answer span.answer-option.correct {
   background: #45c245;
 }
 
-div.answer span.incorrect {
+div.answer span.answer-option.incorrect {
   background: #f44;
 }
 
@@ -558,10 +600,30 @@ div.answer label {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  padding: 1.5rem;
 }
 
 div.answer input[type="radio"] {
   cursor: pointer;
+  margin-left: 1rem;
+}
+
+div.answer h4 {
+  font-size: 2rem;
+}
+
+div.answer p {
+  font-size: 1.8rem;
+}
+
+.game-over .correct {
+  font-size: 2rem;
+  color: #45c245;
+}
+
+.game-over .incorrect {
+  font-size: 2rem;
+  color: #f44;
 }
 
 footer {
@@ -575,5 +637,81 @@ footer a {
 
 footer a:hover, footer a:focus {
   color: rgba(250, 253, 255, 0.6);
+}
+
+.by {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+}
+
+@media (max-width: 1024px) {
+  div.setup {
+    width: 100%;
+  }
+  div.question-answer {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  div.setup-option {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+  }
+  div.setup input,
+  div.setup select {
+    margin: 0 1rem 1rem;
+  }
+  div.score-timer {
+    width: 100%;
+  }
+  div.question-answer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    width: 90%;
+  }
+  div.setup {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    text-align: center;
+  }
+  div.setup select {
+    width: 18rem;
+  }
+  div.question-container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  div.question-container h3 {
+    margin-bottom: 0.6rem;
+  }
+  div.answer h3 {
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+  div.answer span.answer-option {
+    width: 100%;
+  }
+  div.answer div.answer-button {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
 }
 /*# sourceMappingURL=styles.css.map */
